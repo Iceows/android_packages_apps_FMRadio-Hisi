@@ -23,3 +23,41 @@ cc_prebuilt_library_shared {
 	check_elf_files: false,
 	prefer: true,
 }
+
+cc_prebuilt_library_shared {
+	name: "libHidlUtil",
+	owner: "huawei",
+	strip: {
+		none: true,
+	},
+	target: {
+		android_arm: {
+			srcs: ["lib/libHidlUtil.so"],
+		},
+		android_arm64: {
+			srcs: ["lib64/libHidlUtil.so"],
+		},
+	},
+	compile_multilib: "both",
+	check_elf_files: false,
+	prefer: true,
+}
+
+cc_prebuilt_library_shared {
+	name: "vendor.huawei.hardware.fm@1.0",
+	owner: "huawei",
+	strip: {
+		none: true,
+	},
+	target: {
+		android_arm: {
+			srcs: ["lib/vendor.huawei.hardware.fm@1.0.so"],
+		},
+		android_arm64: {
+			srcs: ["lib64/vendor.huawei.hardware.fm@1.0.so"],
+		},
+	},
+	compile_multilib: "both",
+	check_elf_files: false,
+	prefer: true,
+}
