@@ -1,0 +1,68 @@
+
+cc_library_shared {
+    name: "libfm-kirin-emui9",
+    shared_libs: [
+        "libHidlUtil",
+        "vendor.huawei.hardware.fm@1.0",
+        "libfm_jni",
+    ],
+    system_ext_specific: true,
+}
+
+
+cc_prebuilt_library_shared {
+	name: "libfm_jni",
+	owner: "huawei",
+	strip: {
+		none: true,
+	},
+	target: {
+		android_arm: {
+			srcs: ["lib/libfm_jni.so"],
+		},
+		android_arm64: {
+			srcs: ["lib64/libfm_jni.so"],
+		},
+	},
+        compile_multilib: "both",
+        prefer: true,
+        check_elf_files: false,
+}
+
+cc_prebuilt_library_shared {
+	name: "libHidlUtil",
+	owner: "huawei",
+	strip: {
+		none: true,
+	},
+	target: {
+		android_arm: {
+			srcs: ["lib/libHidlUtil.so"],
+		},
+		android_arm64: {
+			srcs: ["lib64/libHidlUtil.so"],
+		},
+	},
+        compile_multilib: "both",
+        prefer: true,
+        check_elf_files: false,
+}
+
+cc_prebuilt_library_shared {
+	name: "vendor.huawei.hardware.fm@1.0",
+	owner: "huawei",
+	strip: {
+		none: true,
+	},
+	target: {
+		android_arm: {
+			srcs: ["lib/vendor.huawei.hardware.fm@1.0.so"],
+		},
+		android_arm64: {
+			srcs: ["lib64/vendor.huawei.hardware.fm@1.0.so"],
+		},
+	},
+        compile_multilib: "both",
+        prefer: true,
+        check_elf_files: false,
+}
