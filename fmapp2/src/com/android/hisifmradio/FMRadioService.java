@@ -267,19 +267,16 @@ public class FMRadioService extends Service {
                     AUDIO_CHANNEL_CONFIG, AUDIO_ENCODING_FORMAT);
     private AudioRecord mAudioRecord = null;
 
-    boolean bisHisiChip = false;
+    boolean bIsHisiChip = false;
 
     public FMRadioService() {
     }
 
     @Override
     public void onCreate() {
-        String chiptype= SystemProperties.get("ro.connectivity.chiptype", "");
-        if (chiptype.equalsIgnoreCase("hisi"))
-            bisHisiChip = true;
-        else
-            bisHisiChip = false;
-        Log.d(LOGTAG,"Chip type name : " + chiptype + " - Hisi : " + bisHisiChip);
+        String chiptype = SystemProperties.get("ro.connectivity.chiptype", "");
+        bIsHisiChip = chiptype.equalsIgnoreCase("hisi");
+        Log.d(LOGTAG, "Chip type: " + chiptype + " (hisi: " + bIsHisiChip + ")");
 
         super.onCreate();
 
@@ -581,14 +578,10 @@ public class FMRadioService extends Service {
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         float volume = 0;
 
-        if (bisHisiChip) {
-            // FM Volume have value between 0 and 0x10
-            // uVar3 = (uint)(param_1 * 15.0);
-            // must be inf a 0x10
-            if (mCurrentVolumeIndex>15)
-                volume = (float) 1;
-            else
-                volume = ((float) mCurrentVolumeIndex) / 15;
+        if (bIsHisiChip) {
+            // FM volume ranges between 0 and 15 (0x0 to 0xF) so just
+            // convert mCurrentVolumeIndex to a value between 0 and 1.
+            volume = (mCurrentVolumeIndex > 15) ? 1.0f : (float) mCurrentVolumeIndex / 15;
         }
         else {
             float decibels = audioManager.getStreamVolumeDb(AudioManager.STREAM_MUSIC,
@@ -2904,9 +2897,9 @@ public class FMRadioService extends Service {
             enableSlimbus(ENABLE_SLIMBUS_DATA_PORT);
         }
 
-        if (bisHisiChip) {
+        if (bIsHisiChip) {
             if (speakerOn) {
-                AudioSystem.setForceUse(AudioSystem.FOR_MEDIA , AudioSystem.FORCE_SPEAKER);
+                AudioSystem.setForceUse(AudioSystem.FOR_MEDIA, AudioSystem.FORCE_SPEAKER);
                 return;
             }
             else {
